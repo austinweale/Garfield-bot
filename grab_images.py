@@ -16,9 +16,11 @@ posts_year = 2018
 posts_month = 3
 
 html = urlopen(format_url(posts_year, posts_month))
-soup = BeautifulSoup(html, 'html.parser')
+html_page = BeautifulSoup(html, 'html.parser')
 print("id = " + format_post_id(posts_year, posts_month))
 post_id = format_post_id(posts_year, posts_month)
-current_month_div = soup.find(id=post_id)
-
-for 
+current_month_div = html_page.find(id=post_id)
+div_doc = BeautifulSoup(str(current_month_div), 'html.parser')
+print(div_doc.prettify())
+#print(div_doc.find_all('a'))
+#print(div_doc.find_all('img'))
