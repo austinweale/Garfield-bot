@@ -16,27 +16,36 @@ def format_post_id(year, month):
         tens_place = "0"
     return "posts_" + str(year) + tens_place + str(month)
 
-posts_year = 2017
-posts_month = 9
+def log_msg(msg):
+    print("~~~~~~~~~~~~~~~~~~~~")
+    print(msg)
+    print("~~~~~~~~~~~~~~~~~~~~")
 
-#Get full page html
-html = urlopen(format_url(posts_year, posts_month))
-html_page = BeautifulSoup(html, 'html.parser')
+count = 0
 
-#get html for current month's comics
-print("id = " + format_post_id(posts_year, posts_month))
-post_id = format_post_id(posts_year, posts_month)
-current_month_div = html_page.find(id=post_id)
-div_doc = BeautifulSoup(str(current_month_div), 'html.parser')
-print(div_doc.prettify())
+for posts_year in range(2008, 2019):
+    for posts_month in range(1, 12):
+        log_msg("SEARCHING FOR: " + str(posts_month) + "/" + str(posts_year))
+        #Get full page html
+        html = urlopen(format_url(posts_year, posts_month))
+        html_page = BeautifulSoup(html, 'html.parser')
 
-links = div_doc.find_all("a")
-print("links: " + str(links))
+        #get html for current month's comics
+        post_id = format_post_id(posts_year, posts_month)
+        current_month_div = html_page.find(id=post_id)
+        div_doc = BeautifulSoup(str(current_month_div), 'html.parser')
 
-for link in links:
-    print("contents: " + str(link.attrs['href']))
+        links = div_doc.find_all("a")
 
+        for link in links:
+            count += 1
+            current_link = str(link.attrs['href'])
+            print("contents: " + current_link)
+            comic_doc = BeautifulSoup(str(current_link), 'html.parser')
+            current_month_div = html_page.find(id="content")
+            print("current links")
 
+log_msg("TOTAL IMAGES: " + str(count))
 #~~~~~~~~~~~~~~~~~~~~~~~~
 # Get image from the G-G post URL
 #~~~~~~~~~~~~~~~~~~~~~~~~
